@@ -13,11 +13,9 @@ namespace ProjectThreeBattleship
             name = "Destroyer";
             size = 2;
             sunk = false;
+            coordinates = new List<string>();
         }
 
-        public override void SetCoordinates(List<string> coordinates)
-        {
-            this.coordinates = coordinates;
-        }
+       
     }
 }

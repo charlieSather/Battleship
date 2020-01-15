@@ -10,19 +10,39 @@ namespace ProjectThreeBattleship
     {
         Player playerOne;
         Player playerTwo;
+        Player player = new Player("Charlie");
+
 
         public void Run()
         {
-            Player player = new Player("Charlie");
             Board board = new Board();
             board.setupBoard();
             board.printBoard();
+            player.board.initMap();
 
-            DisplayRules();
-            SetupPlayers();
-            SetupPlayerBoards();
+            player.PlaceShip(player.ships[0]);
 
-            playerOne.board.printBoard();
+
+           // foreach (Ship boat in player.ships)
+            //{
+             //   player.PlaceShip(boat);
+            //}
+            //board.printBoard();
+
+            // DisplayRules();
+            // SetupPlayers();
+            // SetupPlayerBoards();
+            Ship ship = new Battleship();
+
+            //   ship.SetCoordinates(new List<string> { "B10", "B11", "B12", "B13" });
+            //  board.DrawShip(ship);
+            player.board.printBoard();
+            //board.printBoard();
+
+           // Console.WriteLine(player.board.DoCoordinatesLink("A1", "5", new Battleship())); 
+
+
+          //  playerOne.board.printBoard();
 
             Console.ReadLine();
         }

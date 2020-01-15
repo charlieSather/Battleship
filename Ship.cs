@@ -14,7 +14,18 @@ namespace ProjectThreeBattleship
 
         public bool sunk { get; set; }
 
-        public abstract void SetCoordinates(List<string> coordinates);
+
+        public void SetCoordinates(List<string> coordinates)
+        {
+            this.coordinates = coordinates;
+        }
+
+        public bool HasCoordinate(string coordinate)
+        {
+            return coordinates.Contains(coordinate);
+        }
+
+        
 
 
     }
