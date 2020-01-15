@@ -12,9 +12,10 @@ namespace ProjectThreeBattleship
         {
             name = "Aircraft Carrier";
             size = 5;
+            sunk = false;
         }
 
-        public override void SetCoordinates(List<int> coordinates)
+        public override void SetCoordinates(List<string> coordinates)
         {
             this.coordinates = coordinates;
         }

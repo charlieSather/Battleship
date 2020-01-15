@@ -8,10 +8,8 @@ namespace ProjectThreeBattleship
 {
     class Game
     {
-
         Player playerOne;
         Player playerTwo;
-
 
         public void Run()
         {
@@ -40,16 +38,13 @@ namespace ProjectThreeBattleship
         }
         public void SetupPlayerBoards()
         {
-            playerOne.board.setupBoard();
-            playerOne.opponentBoard.setupBoard();
-            playerTwo.board.setupBoard();
-            playerTwo.opponentBoard.setupBoard();
+           
 
         }
 
         public string PromptPlayerName()
         {
-            Console.WriteLine("Please enter a name for player");
+            Console.WriteLine("\nPlease enter a name for player");
             string input = Console.ReadLine();
             switch (input)
             {

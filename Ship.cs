@@ -9,10 +9,12 @@ namespace ProjectThreeBattleship
     abstract class Ship
     {
         public int size { get; set; }
-        public List<int> coordinates { get; set; }
+        public List<string> coordinates { get; set; }
         public string name { get; set; }
 
-        public abstract void SetCoordinates(List<int> coordinates);
+        public bool sunk { get; set; }
+
+        public abstract void SetCoordinates(List<string> coordinates);
 
 
     }
