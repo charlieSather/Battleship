@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace ProjectThreeBattleship
 {
-    class Destroyer
+    class Destroyer : Ship
     {
+        public Destroyer()
+        {
+            name = "Destroyer";
+            size = 2;
+        }
+
+        public override void SetCoordinates(List<int> coordinates)
+        {
+            this.coordinates = coordinates;
+        }
     }
 }
