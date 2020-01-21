@@ -15,12 +15,12 @@ namespace ProjectThreeBattleship
         public static string GetPlayersName()
         {
             Console.WriteLine("\nPlease enter a name for player");
-            string input  = "";
+            string input = "";
             bool validInput = false;
-            while(validInput == false)
+            while (validInput == false)
             {
                 input = Console.ReadLine();
-                if(input == "")
+                if (input == "")
                 {
                     Console.WriteLine("\nNo empty names here!!!");
                 }
@@ -28,7 +28,7 @@ namespace ProjectThreeBattleship
                 {
                     Console.WriteLine($"\nWelcome {input}!");
                     validInput = true;
-                }                
+                }
             }
             return input;
         }
@@ -49,16 +49,12 @@ namespace ProjectThreeBattleship
                 {
                     input = Console.ReadLine();
 
-                    if (player.board.map.ContainsKey(input) == true)
+                    if (CoordinateExists(input,player.board))
                     {
                         if (!player.ShipsHaveCoordinate(input))
                         {
                             validInput = true;
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Coordinate does not exist. Please try again");
                     }
                 }
                 coordinates.Add(input);
@@ -66,13 +62,75 @@ namespace ProjectThreeBattleship
             }
             return coordinates;
         }
+        public static bool CoordinateExists(string coordinate, Board board)
+        {
+            if (board.map.ContainsKey(coordinate))
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Coordinate does not exist. Please try again");
+                return false;
+            }
+        }
 
         public static void ShipHasCoordinate(Player player, Ship ship, string coordinate)
         {
             Console.WriteLine($"Sorry {player.name}! But your {ship.name} is already placed at {coordinate}");
-            Console.WriteLine("Please another coordinate.");
+            Console.WriteLine("Please enter a different coordinate.");
+        }
+
+        public static string GetPlayersTarget(Player player)
+        {
+            Console.Clear();
+            player.opponentBoard.printBoard();
+            Console.WriteLine($"{player.name} please select a location to fire");
+            string input = "";
+            bool validInput = false;
+
+            while(validInput == false)
+            {
+                input = Console.ReadLine();
+                if(CoordinateExists(input, player.opponentBoard))
+                {
+                    if(player.opponentBoard.TileIsEmpty(input))
+                    {
+                        validInput = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"You've already fired there {player.name}, enter another coordinate");
+                    }
+                }
+            }
+            return input;
+        }
+        public static void HitShip(Player player, string coordinate)
+        {
+            Console.Clear();
+            player.opponentBoard.printBoard();
+            Console.WriteLine($"{player.name}'s landed a hit at {coordinate}!!!");
+            Console.WriteLine("Press enter to end turn");
+            Console.ReadLine();
+        }
+        public static void SunkShip(Player player, Ship ship)
+        {
+            Console.Clear();
+            player.opponentBoard.printBoard();
+            Console.WriteLine($"{player.name}'s {ship.name} has sunk!!!");
+            Console.WriteLine("Press enter to end turn");
+            Console.ReadLine();
+        }
+        public static void MissedShip(Player player, string coordinate)
+        {
+            Console.Clear();
+            player.opponentBoard.printBoard();
+            Console.WriteLine($"{player.name}'s shot has missed at {coordinate}!");
+            Console.WriteLine("Press enter to end turn");
+            Console.ReadLine();
         }
 
 
     }
-}
+    }

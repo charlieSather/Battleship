@@ -30,37 +30,6 @@ namespace ProjectThreeBattleship
 
         public void PlaceShip(Ship ship)
         {
-            //List<string> coordinates = new List<string>();
-
-            //Console.WriteLine($"Please enter starting coordinate and ending coordinate to place your {ship.name}");
-            //string input = "";
-            //bool validInput = false;
-
-            //for(int i = 0; i < 2; i++)
-            //{
-            //    while(validInput == false)
-            //    {
-            //        input = Console.ReadLine();
-
-            //        if (board.map.ContainsKey(input) == true)
-            //        {
-            //            validInput = IsCoordinateAvailable(input, ship);
-            //            {
-            //                if(validInput == false)
-            //                {
-            //                    Console.WriteLine("\nAnother ship is currently occupying that coordinate please select another");
-            //                }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("Coordinate does not exist. Please try again");
-            //        }
-            //    }
-            //    coordinates.Add(input);
-            //    validInput = false;
-            //}
-
             List<string> coordinates = UserInterface.GetStartEndCoordinates(this, ship);
 
             (string, string) startEnd = (coordinates[0], coordinates[1]);
@@ -74,41 +43,39 @@ namespace ProjectThreeBattleship
                 Console.WriteLine("Couldn't place ship");
                 PlaceShip(ship);
             }
-            coordinates.Clear();
         }
 
-        public bool IsCoordinateAvailable(string coordinate,Ship ship)
+        public void Fire(string target,Player opponent)
         {
-            bool availableCoordinate = true;
-
-            foreach(Ship currentShip in ships)
+            if (opponent.Hit(target))
             {
-                //problematic line if we want to add more ships in future
-                if(currentShip.name == ship.name)
-                {
-                    continue;
-                }
-                if(currentShip.HasCoordinate(coordinate) == true)
-                {
-                    availableCoordinate = false;
-                    break;
-                }
+                opponentBoard.DrawHit(target);
+                UserInterface.HitShip(this, target);
             }
-            return availableCoordinate;
+            else
+            {
+                opponentBoard.DrawMiss(target);
+                UserInterface.MissedShip(this, target);
+            }            
         }
 
-        public void SetupShips()
+        public bool Hit(string coordinate)
         {
+            bool hit = false;
+
             foreach(Ship ship in ships)
             {
-                Console.Clear();
-                board.printBoard();
-                PlaceShip(ship);
+                if (ship.HasCoordinate(coordinate))
+                {
+                    ship.Hit();
+                    hit = true;
+                    if (ship.IsSunk())
+                    {
+                        UserInterface.SunkShip(this, ship);
+                    }
+                }
             }
-        }
-        public void Fire(Player opponent)
-        {
-            
+            return hit;
         }
         public bool ShipsHaveCoordinate(string coordinate)
         {
@@ -124,9 +91,13 @@ namespace ProjectThreeBattleship
             }
             return coordinateExists;
         }
-
-       
-
-
+        public void DrawShips()
+        {
+            foreach(Ship ship in ships)
+            {
+                (string, string) startEnd = (ship.coordinates[0], ship.coordinates[ship.coordinates.Count - 1]);
+                board.DrawShip(ship, startEnd);
+            }
+        }
     }
 }

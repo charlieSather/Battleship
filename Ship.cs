@@ -11,6 +11,7 @@ namespace ProjectThreeBattleship
         public int size { get; set; }
         public List<string> coordinates { get; set; }
         public string name { get; set; }
+        public int hitsReceived { get; private set; }
 
         public bool sunk { get; set; }
 
@@ -27,7 +28,16 @@ namespace ProjectThreeBattleship
         {
             return coordinates.Contains(coordinate);
         }
+        public void Hit()
+        {
+            hitsReceived++;
+        }
 
+        public bool IsSunk()
+        {
+            return hitsReceived == size ? true : false;
+        }
+       
 
         
 

@@ -10,16 +10,40 @@ namespace ProjectThreeBattleship
     {
         Player playerOne;
         Player playerTwo;
+        bool gameOver;
 
         public void Run()
         {
             UserInterface.DisplayRules();
 
-            SetupPlayers();
-            SetupPlayerBoards();
+            //SetupPlayers();
+            //SetupPlayerBoards();
 
+            AutomatedSetup();
+
+            gameOver = false;
+            PlayGame();
 
             Console.ReadLine();
+        }
+        public void PlayGame()
+        {
+            bool gameOver = false;
+
+            while(gameOver == false)
+            {
+                PlayTurn(playerOne, playerTwo);
+
+                PlayTurn(playerTwo, playerOne);
+            }
+        }
+
+        public void PlayTurn(Player player, Player targetPlayer)
+        {
+            player.opponentBoard.printBoard();
+            string target = UserInterface.GetPlayersTarget(player);
+
+            player.Fire(target, targetPlayer);
         }
 
         public void SetupPlayers()
@@ -28,21 +52,50 @@ namespace ProjectThreeBattleship
             playerTwo = new Player(UserInterface.GetPlayersName());
         }
         public void SetupPlayerBoards()
-        {
-            playerOne.board.initMap();
-            playerOne.board.setupBoard();
+        {           
             PlaceShips(playerOne);
-
-            playerTwo.board.initMap();
-            playerTwo.board.setupBoard();
             PlaceShips(playerTwo);
-
         }
         public void PlaceShips(Player player)
         {
             foreach(Ship ship in player.ships)
             {
                 player.PlaceShip(ship);
+            }
+        }
+
+        public void AutomatedSetup()
+        {
+            playerOne = new Player("Charlie");
+            playerTwo = new Player("Greg");
+
+            AutomateShipPlacement(playerOne);
+            AutomateShipPlacement(playerTwo);
+
+            playerOne.DrawShips();
+            playerTwo.DrawShips();
+            
+
+        }
+        public void AutomateShipPlacement(Player player)
+        {
+            foreach(Ship ship in player.ships)
+            {
+                switch (ship.name)
+                {
+                    case ("Destroyer"):
+                        ship.SetCoordinates(new List<string> { "A1", "A2" });
+                        break;
+                    case ("Submarine"):
+                        ship.SetCoordinates(new List<string> { "B1", "B2","B3" });
+                        break;
+                    case ("Battleship"):
+                        ship.SetCoordinates(new List<string> { "C1", "C2", "C3","C4" });
+                        break;
+                    case ("Aircraft Carrier"):
+                        ship.SetCoordinates(new List<string> { "D1", "D2", "D3", "D4", "D5"});
+                        break;
+                }
             }
         }
 

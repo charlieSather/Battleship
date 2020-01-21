@@ -68,6 +68,8 @@ namespace ProjectThreeBattleship
             rows = 20;
             columns = 20;
             board = new char[rows, columns];
+            setupBoard();
+            initMap();
         }
 
         public void printBoardIndices()
@@ -141,16 +143,7 @@ namespace ProjectThreeBattleship
                 }
             }
         }
-        //public void DrawShips(Ship ships)
-        //{
-        //    foreach(Ship ship in ships)
-        //    {
-        //        foreach (string coord in ship.coordinates)
-        //        {
-        //            board[map[coord].Item1, map[coord].Item2] = 'S';
-        //        }
-        //    }
-        //}
+
         public void DrawShip(Ship ship, (string, string) startEnd)
         {
 
@@ -299,34 +292,6 @@ namespace ProjectThreeBattleship
             return "" + intsToLetters[indices.Item1] + indices.Item2;
         }
 
-        //public bool DoCoordinatesLink(string coordinateOne, string coordinateTwo, Ship ship)
-        //{
-        //    bool linked = false;
-
-        //    try
-        //    {
-        //        if (coordinateOne[0] == coordinateTwo[0])
-        //        {
-        //            if (Math.Abs(int.Parse(coordinateTwo[1].ToString()) - int.Parse(coordinateOne[1].ToString())) < ship.size)
-        //            {
-        //                linked = true;
-        //            }
-        //        }
-        //        else if (int.Parse(coordinateOne[1].ToString()) == int.Parse(coordinateTwo[1].ToString()))
-        //        {
-        //            if (Math.Abs(lettersToIndex[coordinateTwo[0].ToString()] - lettersToIndex[coordinateOne[0].ToString()]) < ship.size)
-        //            {
-        //                linked = true;
-        //            }
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
-              
-        //    return linked;
-        //}
 
         //A has ascii code 65, T has 84.
         //ascii int range (65-84)
@@ -343,6 +308,22 @@ namespace ProjectThreeBattleship
                 }
                 asciiChar++;
             }
+        }
+
+        public bool TileIsEmpty(string coordinate)
+        {
+            (int, int) indices = GetIndices(coordinate);
+            return board[indices.Item1, indices.Item2] == '-' ? true : false;
+        }
+        public void DrawHit(string coordinate)
+        {
+            (int, int) indices = GetIndices(coordinate);
+            board[indices.Item1, indices.Item2] = 'X';
+        }
+        public void DrawMiss(string coordinate)
+        {
+            (int, int) indices = GetIndices(coordinate);
+            board[indices.Item1, indices.Item2] = 'O';
         }
     }
 }
