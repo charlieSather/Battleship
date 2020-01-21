@@ -14,11 +14,14 @@ namespace ProjectThreeBattleship
 
         public bool sunk { get; set; }
 
-
+        public void AddCoordinate(string coordinate)
+        {
+            coordinates.Add(coordinate);
+        }
         public void SetCoordinates(List<string> coordinates)
         {
             this.coordinates = coordinates;
-        }
+        }   
 
         public bool HasCoordinate(string coordinate)
         {

@@ -19,8 +19,10 @@ namespace ProjectThreeBattleship
             board.setupBoard();
             board.printBoard();
             player.board.initMap();
+            player.SetupShips();
+            Console.WriteLine(player.ships);
 
-            player.PlaceShip(player.ships[0]);
+           // player.PlaceShip(player.ships[0]);
 
 
            // foreach (Ship boat in player.ships)

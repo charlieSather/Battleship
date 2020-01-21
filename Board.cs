@@ -150,11 +150,57 @@ namespace ProjectThreeBattleship
         //        }
         //    }
         //}
-        public void DrawShip(Ship ship)
+        public void DrawShip(Ship ship, (string, string) startEnd)
         {
-            foreach(string coord in ship.coordinates)
+
+            (int, int) startIndex = GetIndices(startEnd.Item1);
+            (int, int) endIndex = GetIndices(startEnd.Item2);
+
+
+            if(startIndex.Item1 == endIndex.Item1)
             {
-                board[map[coord].Item1, map[coord].Item2] = 'S';
+                if (startIndex.Item2 < endIndex.Item2)
+                {
+                    for (int i = startIndex.Item2; i <= endIndex.Item2; i++)
+                    {
+                        board[startIndex.Item1, i] = ship.name[0];
+                        ship.AddCoordinate("" + intsToLetters[startIndex.Item1] + i);
+                    }
+                }
+                else
+                {
+                    for (int i = startIndex.Item2; i >= endIndex.Item2; i--)
+                    {
+                        if (board[startIndex.Item1, i] != '-')
+                        {
+                            board[startIndex.Item1, i] = ship.name[0];
+                            ship.AddCoordinate("" + intsToLetters[startIndex.Item1] + i);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (startIndex.Item1 < endIndex.Item1)
+                {
+                    for (int i = startIndex.Item1; i <= endIndex.Item1; i++)
+                    {
+                        board[i, startIndex.Item2] = ship.name[0];
+                        ship.AddCoordinate("" + intsToLetters[i] + startIndex.Item2);
+
+                    }
+                }
+                else
+                {
+                    for (int i = startIndex.Item2; i >= endIndex.Item2; i--)
+                    {
+                        board[i, startIndex.Item2] = ship.name[0];
+                        ship.AddCoordinate("" + intsToLetters[i] + startIndex.Item2);
+
+
+                    }
+
+                }
             }
         }
 
@@ -165,8 +211,116 @@ namespace ProjectThreeBattleship
         //    {
         //        board[lettersToIndex[coord[0].ToString()], int.Parse(coord[1].ToString()) - 1] = 'S';
         //    }
-
+        //
         //}
+
+        public bool CanDraw(Ship ship, List<string> coordinates)
+        {
+            (int, int) startIndex = GetIndices(coordinates[0]);
+            (int, int) endIndex = GetIndices(coordinates[1]);
+            
+       
+            if (startIndex.Item1 == endIndex.Item1)
+            {
+                if(Math.Abs(endIndex.Item2 - startIndex.Item2) == ship.size - 1)
+                {
+                    if(startIndex.Item2 < endIndex.Item2)
+                    {
+                        for (int i = startIndex.Item2; i <= endIndex.Item2; i++)
+                        {
+                            if(board[startIndex.Item1, i] != '-')
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        for(int i = startIndex.Item2; i >= endIndex.Item2; i--)
+                        {
+                            if (board[startIndex.Item1, i] != '-')
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+                //draw Horizontal  
+            }
+            else if (startIndex.Item2 == endIndex.Item2)
+            {
+                if(Math.Abs(endIndex.Item1 - startIndex.Item1) == ship.size - 1)
+                {
+                    if(startIndex.Item1 < endIndex.Item1)
+                    {
+                        for (int i = startIndex.Item1; i <= endIndex.Item1; i++)
+                        {
+                            if (board[i, startIndex.Item2] != '-')
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        for (int i = startIndex.Item2; i >= endIndex.Item2; i--)
+                        {
+                            if (board[i, startIndex.Item2] != '-')
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+
+                    }
+
+
+                }
+                else
+                {
+                    return false;
+                }
+                //draw vertical  
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public bool CheckFirstIndex(string input)
+        {
+            if(input.Length <= 1)
+            {
+                return true;
+            }
+            return input[0] == input[1] ? CheckFirstIndex(input.Substring(1)) : false;
+        }
+
+
+        public (int, int) GetIndices(string coordinate)
+        {
+            if (map.ContainsKey(coordinate))
+            {
+                return map[coordinate];
+            }
+            else
+            {
+                return (0,0);
+            }
+        }
+        public string GetCoordinate((int,int) indices)
+        {
+            return "" + intsToLetters[indices.Item1] + indices.Item2;
+        }
 
         public bool DoCoordinatesLink(string coordinateOne, string coordinateTwo, Ship ship)
         {
@@ -197,7 +351,6 @@ namespace ProjectThreeBattleship
             return linked;
         }
 
-
         //A has ascii code 65, T has 84.
         //ascii int range (65-84)
 
@@ -213,8 +366,6 @@ namespace ProjectThreeBattleship
                 }
                 asciiChar++;
             }
-
         }
-
     }
 }

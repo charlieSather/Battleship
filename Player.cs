@@ -35,11 +35,11 @@ namespace ProjectThreeBattleship
         {
             List<string> coordinates = new List<string>();
 
-            Console.WriteLine($"Please enter {ship.size} coordinates to place your {ship.name}");
+            Console.WriteLine($"Please enter starting coordinate and ending coordinate to place your {ship.name}");
             string input = "";
             bool validInput = false;
 
-            for(int i = 0; i < ship.size; i++)
+            for(int i = 0; i < 2; i++)
             {
                 while(validInput == false)
                 {
@@ -63,8 +63,20 @@ namespace ProjectThreeBattleship
                 coordinates.Add(input);
                 validInput = false;
             }
-            ship.SetCoordinates(coordinates);
-            board.DrawShip(ship);
+
+            (string, string) startEnd = (coordinates[0], coordinates[1]);
+
+            if(board.CanDraw(ship, coordinates))
+            {
+                board.DrawShip(ship, startEnd);
+            }
+            else
+            {
+                Console.WriteLine("Couldn't place ship");
+                PlaceShip(ship);
+            }
+            //ship.SetCoordinates(coordinates);
+            //board.DrawShip(ship, startEnd);
             coordinates.Clear();
         }
 
@@ -82,9 +94,24 @@ namespace ProjectThreeBattleship
                 if(currentShip.HasCoordinate(coordinate) == true)
                 {
                     availableCoordinate = false;
+                    break;
                 }
             }
             return availableCoordinate;
+        }
+
+        public void SetupShips()
+        {
+            foreach(Ship ship in ships)
+            {
+                Console.Clear();
+                board.printBoard();
+                PlaceShip(ship);
+            }
+        }
+        public void Fire(Player opponent)
+        {
+            
         }
 
        
