@@ -37,9 +37,20 @@ namespace ProjectThreeBattleship
         {
             return hitsReceived == size ? true : false;
         }
-       
 
-        
+        public override string ToString()
+        {
+            string coords = $"{name}";
+
+            foreach(string coord in coordinates)
+            {
+                coords += ", " + coord;
+            }
+            return coords;
+        }
+
+
+
 
 
     }

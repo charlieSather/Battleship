@@ -99,5 +99,12 @@ namespace ProjectThreeBattleship
                 board.DrawShip(ship, startEnd);
             }
         }
+        public void PrintShips()
+        {
+            foreach (Ship ship in ships)
+            {
+                Console.WriteLine(ship.ToString());
+            }
+        }
     }
 }

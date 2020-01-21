@@ -16,10 +16,17 @@ namespace ProjectThreeBattleship
         {
             UserInterface.DisplayRules();
 
-            //SetupPlayers();
-            //SetupPlayerBoards();
-
-            AutomatedSetup();
+            int choice = UserInterface.PromptAutoFill();
+            switch (choice)
+            {
+                case 1:
+                    AutomatedSetup();
+                    break;
+                case 2:
+                    SetupPlayers();
+                    SetupPlayerBoards();
+                    break;
+            }
 
             gameOver = false;
             PlayGame();
@@ -80,34 +87,23 @@ namespace ProjectThreeBattleship
         {
             playerOne = new Player("Charlie");
             playerTwo = new Player("Greg");
-
             AutomateShipPlacement(playerOne);
             AutomateShipPlacement(playerTwo);
-
-            playerOne.DrawShips();
-            playerTwo.DrawShips();
-            
-
+            playerOne.board.printBoard();
+            playerOne.PrintShips();
+            Console.WriteLine($"\n{playerOne.name}'s board and ships\nenter to see next player's board");
+            Console.ReadLine();
+            playerTwo.board.printBoard();
+            playerTwo.PrintShips();
+            Console.WriteLine($"\n{playerTwo.name}'s board and ships\nEnter to begin playing");
+            Console.ReadLine();
         }
+
         public void AutomateShipPlacement(Player player)
         {
-            foreach(Ship ship in player.ships)
+            foreach (Ship ship in player.ships)
             {
-                switch (ship.name)
-                {
-                    case ("Destroyer"):
-                        ship.SetCoordinates(new List<string> { "A1", "A2" });
-                        break;
-                    case ("Submarine"):
-                        ship.SetCoordinates(new List<string> { "B1", "B2","B3" });
-                        break;
-                    case ("Battleship"):
-                        ship.SetCoordinates(new List<string> { "C1", "C2", "C3","C4" });
-                        break;
-                    case ("Aircraft Carrier"):
-                        ship.SetCoordinates(new List<string> { "D1", "D2", "D3", "D4", "D5"});
-                        break;
-                }
+                player.board.drawShipRandomly(ship);
             }
         }
 
@@ -124,6 +120,8 @@ namespace ProjectThreeBattleship
             }
             return alive;
         }
+
+       
 
     }
 }

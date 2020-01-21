@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace ProjectThreeBattleship
 {
@@ -133,6 +134,24 @@ namespace ProjectThreeBattleship
         {
             Console.WriteLine($"Congratulations {player.name}!!");
             Console.WriteLine($"You have won the game!!!!");
+        }
+
+        public static int PromptAutoFill()
+        {
+            Console.Clear();
+            Console.WriteLine("Do you want to autofill board with default positions\n1: Yes\n2: No");
+
+            Regex intMatch = new Regex(@"^[1,2]$");
+            string input = Console.ReadLine();
+            if (intMatch.IsMatch(input))
+            {
+                return Int32.Parse(input);
+            }
+            else
+            {
+                Console.WriteLine("Try Again");
+                return PromptAutoFill();
+            }
         }
 
 

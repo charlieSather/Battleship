@@ -289,7 +289,7 @@ namespace ProjectThreeBattleship
         }
         public string GetCoordinate((int,int) indices)
         {
-            return "" + intsToLetters[indices.Item1] + indices.Item2;
+            return "" + intsToLetters[indices.Item1] + (indices.Item2 + 1);
         }
 
 
@@ -325,5 +325,78 @@ namespace ProjectThreeBattleship
             (int, int) indices = GetIndices(coordinate);
             board[indices.Item1, indices.Item2] = 'O';
         }
+
+        public void drawShipRandomly(Ship ship)
+        {
+            string randStart = "";
+            string randEnd = "";
+            (int, int) indices;
+            int range = ship.size - 1;
+
+            bool canDraw = false;
+
+            int drawDirection = StaticRandom.NextInclusive(1, 2);
+
+            //draw horizontal
+            if (drawDirection == 1)
+            {
+                while(canDraw == false)
+                {
+                    int letter = StaticRandom.NextInclusive(19);
+                    indices = (letter, StaticRandom.NextInclusive(19));
+                    randStart = GetCoordinate(indices);
+
+                    int endIntIndex = indices.Item2 + StaticRandom.NextInclusive(-range, range);
+
+                    if(endIntIndex < 0)
+                    {
+                        //have to try to draw other direction
+                        endIntIndex += (2 * range);
+                    }
+                    else if (endIntIndex > 19)
+                    {
+                        endIntIndex -= (2 * range);
+                    }
+                    randEnd = GetCoordinate((letter, endIntIndex));
+
+                    if (CanDraw(ship, new List<string> { randStart, randEnd }))
+                    {
+                        canDraw = true;
+                        DrawShip(ship, (randStart, randEnd));
+                    }
+                }             
+
+            }
+            else
+            {
+                //draw vertical
+                while (canDraw == false)
+                {
+                    int number = StaticRandom.NextInclusive(19);
+                    indices = (StaticRandom.NextInclusive(19), number);
+                    randStart = GetCoordinate(indices);
+
+                    int endLetterIndex = indices.Item1 + StaticRandom.NextInclusive(-range, range);
+
+                    if (endLetterIndex < 0)
+                    {
+                        //have to try to draw other direction
+                        endLetterIndex += (2 * range);
+                    }
+                    else if (endLetterIndex > 19)
+                    {
+                        endLetterIndex -= (2 * range);
+                    }
+                    randEnd = GetCoordinate((endLetterIndex, number));
+
+                    if (CanDraw(ship, new List<string> { randStart, randEnd }))
+                    {
+                        canDraw = true;
+                        DrawShip(ship, (randStart, randEnd));
+                    }
+                }
+            }
+        }
+       
     }
 }
