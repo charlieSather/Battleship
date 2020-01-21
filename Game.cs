@@ -28,13 +28,25 @@ namespace ProjectThreeBattleship
         }
         public void PlayGame()
         {
-            bool gameOver = false;
-
-            while(gameOver == false)
+            while (PlayerAlive(playerOne) && PlayerAlive(playerTwo))
             {
                 PlayTurn(playerOne, playerTwo);
 
+                if (!PlayerAlive(playerTwo))
+                {
+                    break;
+                }    
+                
                 PlayTurn(playerTwo, playerOne);
+            }
+
+            if (PlayerAlive(playerOne))
+            {
+                UserInterface.PrintWinner(playerOne);
+            }
+            else
+            {
+                UserInterface.PrintWinner(playerTwo);
             }
         }
 
@@ -97,6 +109,20 @@ namespace ProjectThreeBattleship
                         break;
                 }
             }
+        }
+
+        public bool PlayerAlive(Player player)
+        {
+            bool alive = false;
+            foreach(Ship ship in player.ships)
+            {
+                if (!ship.IsSunk())
+                {
+                    alive = true;
+                    break;
+                }
+            }
+            return alive;
         }
 
     }

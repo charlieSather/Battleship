@@ -117,7 +117,6 @@ namespace ProjectThreeBattleship
         public static void SunkShip(Player player, Ship ship)
         {
             Console.Clear();
-            player.opponentBoard.printBoard();
             Console.WriteLine($"{player.name}'s {ship.name} has sunk!!!");
             Console.WriteLine("Press enter to end turn");
             Console.ReadLine();
@@ -129,6 +128,11 @@ namespace ProjectThreeBattleship
             Console.WriteLine($"{player.name}'s shot has missed at {coordinate}!");
             Console.WriteLine("Press enter to end turn");
             Console.ReadLine();
+        }
+        public static void PrintWinner(Player player)
+        {
+            Console.WriteLine($"Congratulations {player.name}!!");
+            Console.WriteLine($"You have won the game!!!!");
         }
 
 
