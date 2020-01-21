@@ -90,6 +90,7 @@ namespace ProjectThreeBattleship
 
         public void printBoard()
         {
+            Console.Clear();
             for(int s = 0; s < rows + 1; s++)
             {
                 if(s == 0)
@@ -156,7 +157,6 @@ namespace ProjectThreeBattleship
             (int, int) startIndex = GetIndices(startEnd.Item1);
             (int, int) endIndex = GetIndices(startEnd.Item2);
 
-
             if(startIndex.Item1 == endIndex.Item1)
             {
                 if (startIndex.Item2 < endIndex.Item2)
@@ -164,18 +164,15 @@ namespace ProjectThreeBattleship
                     for (int i = startIndex.Item2; i <= endIndex.Item2; i++)
                     {
                         board[startIndex.Item1, i] = ship.name[0];
-                        ship.AddCoordinate("" + intsToLetters[startIndex.Item1] + i);
+                        ship.AddCoordinate("" + intsToLetters[startIndex.Item1] + (i + 1));
                     }
                 }
                 else
                 {
                     for (int i = startIndex.Item2; i >= endIndex.Item2; i--)
                     {
-                        if (board[startIndex.Item1, i] != '-')
-                        {
-                            board[startIndex.Item1, i] = ship.name[0];
-                            ship.AddCoordinate("" + intsToLetters[startIndex.Item1] + i);
-                        }
+                        board[startIndex.Item1, i] = ship.name[0];
+                        ship.AddCoordinate("" + intsToLetters[startIndex.Item1] + (i + 1));
                     }
                 }
             }
@@ -186,39 +183,25 @@ namespace ProjectThreeBattleship
                     for (int i = startIndex.Item1; i <= endIndex.Item1; i++)
                     {
                         board[i, startIndex.Item2] = ship.name[0];
-                        ship.AddCoordinate("" + intsToLetters[i] + startIndex.Item2);
-
+                        ship.AddCoordinate("" + intsToLetters[i] + (startIndex.Item2 + 1));
                     }
                 }
                 else
                 {
-                    for (int i = startIndex.Item2; i >= endIndex.Item2; i--)
+                    for (int i = startIndex.Item1; i >= endIndex.Item1; i--)
                     {
                         board[i, startIndex.Item2] = ship.name[0];
-                        ship.AddCoordinate("" + intsToLetters[i] + startIndex.Item2);
-
-
+                        ship.AddCoordinate("" + intsToLetters[i] + (startIndex.Item2 + 1));
                     }
 
                 }
             }
         }
 
-
-        //public void DrawShip(Ship ship)
-        //{
-        //    foreach(string coord in ship.coordinates)
-        //    {
-        //        board[lettersToIndex[coord[0].ToString()], int.Parse(coord[1].ToString()) - 1] = 'S';
-        //    }
-        //
-        //}
-
         public bool CanDraw(Ship ship, List<string> coordinates)
         {
             (int, int) startIndex = GetIndices(coordinates[0]);
-            (int, int) endIndex = GetIndices(coordinates[1]);
-            
+            (int, int) endIndex = GetIndices(coordinates[1]);            
        
             if (startIndex.Item1 == endIndex.Item1)
             {
@@ -251,7 +234,6 @@ namespace ProjectThreeBattleship
                 {
                     return false;
                 }
-                //draw Horizontal  
             }
             else if (startIndex.Item2 == endIndex.Item2)
             {
@@ -270,7 +252,7 @@ namespace ProjectThreeBattleship
                     }
                     else
                     {
-                        for (int i = startIndex.Item2; i >= endIndex.Item2; i--)
+                        for (int i = startIndex.Item1; i >= endIndex.Item1; i--)
                         {
                             if (board[i, startIndex.Item2] != '-')
                             {
@@ -278,16 +260,12 @@ namespace ProjectThreeBattleship
                             }
                         }
                         return true;
-
                     }
-
-
                 }
                 else
                 {
                     return false;
                 }
-                //draw vertical  
             }
             else
             {
@@ -304,8 +282,7 @@ namespace ProjectThreeBattleship
             }
             return input[0] == input[1] ? CheckFirstIndex(input.Substring(1)) : false;
         }
-
-
+        
         public (int, int) GetIndices(string coordinate)
         {
             if (map.ContainsKey(coordinate))
@@ -322,34 +299,34 @@ namespace ProjectThreeBattleship
             return "" + intsToLetters[indices.Item1] + indices.Item2;
         }
 
-        public bool DoCoordinatesLink(string coordinateOne, string coordinateTwo, Ship ship)
-        {
-            bool linked = false;
+        //public bool DoCoordinatesLink(string coordinateOne, string coordinateTwo, Ship ship)
+        //{
+        //    bool linked = false;
 
-            try
-            {
-                if (coordinateOne[0] == coordinateTwo[0])
-                {
-                    if (Math.Abs(int.Parse(coordinateTwo[1].ToString()) - int.Parse(coordinateOne[1].ToString())) < ship.size)
-                    {
-                        linked = true;
-                    }
-                }
-                else if (int.Parse(coordinateOne[1].ToString()) == int.Parse(coordinateTwo[1].ToString()))
-                {
-                    if (Math.Abs(lettersToIndex[coordinateTwo[0].ToString()] - lettersToIndex[coordinateOne[0].ToString()]) < ship.size)
-                    {
-                        linked = true;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+        //    try
+        //    {
+        //        if (coordinateOne[0] == coordinateTwo[0])
+        //        {
+        //            if (Math.Abs(int.Parse(coordinateTwo[1].ToString()) - int.Parse(coordinateOne[1].ToString())) < ship.size)
+        //            {
+        //                linked = true;
+        //            }
+        //        }
+        //        else if (int.Parse(coordinateOne[1].ToString()) == int.Parse(coordinateTwo[1].ToString()))
+        //        {
+        //            if (Math.Abs(lettersToIndex[coordinateTwo[0].ToString()] - lettersToIndex[coordinateOne[0].ToString()]) < ship.size)
+        //            {
+        //                linked = true;
+        //            }
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
               
-            return linked;
-        }
+        //    return linked;
+        //}
 
         //A has ascii code 65, T has 84.
         //ascii int range (65-84)

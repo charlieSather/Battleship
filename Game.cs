@@ -10,75 +10,40 @@ namespace ProjectThreeBattleship
     {
         Player playerOne;
         Player playerTwo;
-        Player player = new Player("Charlie");
-
 
         public void Run()
         {
-            Board board = new Board();
-            board.setupBoard();
-            board.printBoard();
-            player.board.initMap();
-            player.SetupShips();
-            Console.WriteLine(player.ships);
+            UserInterface.DisplayRules();
 
-           // player.PlaceShip(player.ships[0]);
+            SetupPlayers();
+            SetupPlayerBoards();
 
-
-           // foreach (Ship boat in player.ships)
-            //{
-             //   player.PlaceShip(boat);
-            //}
-            //board.printBoard();
-
-            // DisplayRules();
-            // SetupPlayers();
-            // SetupPlayerBoards();
-            Ship ship = new Battleship();
-
-            //   ship.SetCoordinates(new List<string> { "B10", "B11", "B12", "B13" });
-            //  board.DrawShip(ship);
-            player.board.printBoard();
-            //board.printBoard();
-
-           // Console.WriteLine(player.board.DoCoordinatesLink("A1", "5", new Battleship())); 
-
-
-          //  playerOne.board.printBoard();
 
             Console.ReadLine();
         }
 
-        public void DisplayRules()
-        {
-            Console.WriteLine("Welcome to battleship! you know the rules already!");
-        }
         public void SetupPlayers()
         {
-            playerOne = new Player(PromptPlayerName());
-            playerTwo = new Player(PromptPlayerName());
+            playerOne = new Player(UserInterface.GetPlayersName());
+            playerTwo = new Player(UserInterface.GetPlayersName());
         }
         public void SetupPlayerBoards()
         {
-           
+            playerOne.board.initMap();
+            playerOne.board.setupBoard();
+            PlaceShips(playerOne);
+
+            playerTwo.board.initMap();
+            playerTwo.board.setupBoard();
+            PlaceShips(playerTwo);
 
         }
-
-        public string PromptPlayerName()
+        public void PlaceShips(Player player)
         {
-            Console.WriteLine("\nPlease enter a name for player");
-            string input = Console.ReadLine();
-            switch (input)
+            foreach(Ship ship in player.ships)
             {
-                case (""):
-                    Console.WriteLine("\nNo empty names here!!!");
-                    PromptPlayerName();
-                    break;
-                default:
-                    break;
+                player.PlaceShip(ship);
             }
-            Console.WriteLine($"\nWelcome {input}!");
-            return input;
         }
 
     }

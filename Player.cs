@@ -17,9 +17,7 @@ namespace ProjectThreeBattleship
         {
             this.name = name;
             board = new Board();
-            board.setupBoard();
             opponentBoard = new Board();
-            opponentBoard.setupBoard();
 
             ships = new List<Ship>
             {
@@ -28,41 +26,42 @@ namespace ProjectThreeBattleship
                 new Battleship(),
                 new AircraftCarrier()
             };
-
         }
 
         public void PlaceShip(Ship ship)
         {
-            List<string> coordinates = new List<string>();
+            //List<string> coordinates = new List<string>();
 
-            Console.WriteLine($"Please enter starting coordinate and ending coordinate to place your {ship.name}");
-            string input = "";
-            bool validInput = false;
+            //Console.WriteLine($"Please enter starting coordinate and ending coordinate to place your {ship.name}");
+            //string input = "";
+            //bool validInput = false;
 
-            for(int i = 0; i < 2; i++)
-            {
-                while(validInput == false)
-                {
-                    input = Console.ReadLine();
+            //for(int i = 0; i < 2; i++)
+            //{
+            //    while(validInput == false)
+            //    {
+            //        input = Console.ReadLine();
 
-                    if (board.map.ContainsKey(input) == true)
-                    {
-                        validInput = IsCoordinateAvailable(input, ship);
-                        {
-                            if(validInput == false)
-                            {
-                                Console.WriteLine("\nAnother ship is currently occupying that coordinate please select another");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Coordinate does not exist. Please try again");
-                    }
-                }
-                coordinates.Add(input);
-                validInput = false;
-            }
+            //        if (board.map.ContainsKey(input) == true)
+            //        {
+            //            validInput = IsCoordinateAvailable(input, ship);
+            //            {
+            //                if(validInput == false)
+            //                {
+            //                    Console.WriteLine("\nAnother ship is currently occupying that coordinate please select another");
+            //                }
+            //            }
+            //        }
+            //        else
+            //        {
+            //            Console.WriteLine("Coordinate does not exist. Please try again");
+            //        }
+            //    }
+            //    coordinates.Add(input);
+            //    validInput = false;
+            //}
+
+            List<string> coordinates = UserInterface.GetStartEndCoordinates(this, ship);
 
             (string, string) startEnd = (coordinates[0], coordinates[1]);
 
@@ -75,8 +74,6 @@ namespace ProjectThreeBattleship
                 Console.WriteLine("Couldn't place ship");
                 PlaceShip(ship);
             }
-            //ship.SetCoordinates(coordinates);
-            //board.DrawShip(ship, startEnd);
             coordinates.Clear();
         }
 
@@ -112,6 +109,20 @@ namespace ProjectThreeBattleship
         public void Fire(Player opponent)
         {
             
+        }
+        public bool ShipsHaveCoordinate(string coordinate)
+        {
+            bool coordinateExists = false;
+            foreach(Ship ship in ships)
+            {
+                if (ship.HasCoordinate(coordinate))
+                {
+                    UserInterface.ShipHasCoordinate(this, ship, coordinate);
+                    coordinateExists = true;
+                    break;
+                }
+            }
+            return coordinateExists;
         }
 
        
