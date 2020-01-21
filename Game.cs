@@ -10,40 +10,55 @@ namespace ProjectThreeBattleship
     {
         Player playerOne;
         Player playerTwo;
-        bool gameOver;
+        int gameMode;
+
+        List<string> allCoordsOne;
+        List<string> allCoordsTwo;
 
         public void Run()
         {
+            Console.SetWindowSize(75,35);
+
             UserInterface.DisplayRules();
 
-            int choice = UserInterface.PromptAutoFill();
-            switch (choice)
+            gameMode = UserInterface.PromptAutoFill();
+            switch (gameMode)
             {
                 case 1:
                     AutomatedSetup();
                     break;
                 case 2:
+                    AutomatedSetup();
+                    break;
+                case 3:
                     SetupPlayers();
                     SetupPlayerBoards();
                     break;
             }
-
-            gameOver = false;
             PlayGame();
 
             Console.ReadLine();
         }
         public void PlayGame()
         {
-            while (PlayerAlive(playerOne) && PlayerAlive(playerTwo))
+            if(gameMode == 1)
             {
-                PlayTurn(playerOne, playerTwo);
+                allCoordsOne = new List<string>();
+                allCoordsOne.AddRange(playerOne.board.map.Keys);
+
+                allCoordsTwo = new List<string>();
+                allCoordsTwo.AddRange(playerTwo.board.map.Keys);
+            }
+                  
+            while (PlayerAlive(playerOne) && PlayerAlive(playerTwo))
+            {               
+                PlayTurn(playerOne, playerTwo);              
 
                 if (!PlayerAlive(playerTwo))
                 {
                     break;
-                }    
-                
+                }
+
                 PlayTurn(playerTwo, playerOne);
             }
 
@@ -59,10 +74,28 @@ namespace ProjectThreeBattleship
 
         public void PlayTurn(Player player, Player targetPlayer)
         {
-            player.opponentBoard.printBoard();
-            string target = UserInterface.GetPlayersTarget(player);
 
-            player.Fire(target, targetPlayer);
+            if(gameMode == 1)
+            {
+                if(player.name == playerOne.name)
+                {
+                    string target = player.board.GetRandomCoordinate(allCoordsOne);
+                    player.Fire(target, targetPlayer);
+                }
+                else
+                {
+                    string target = player.board.GetRandomCoordinate(allCoordsTwo);
+                    player.Fire(target, targetPlayer);
+                }
+
+            }
+            else
+            {
+                player.opponentBoard.printBoard();
+                string target = UserInterface.GetPlayersTarget(player);
+                player.Fire(target, targetPlayer);
+            }
+         
         }
 
         public void SetupPlayers()
@@ -71,13 +104,13 @@ namespace ProjectThreeBattleship
             playerTwo = new Player(UserInterface.GetPlayersName());
         }
         public void SetupPlayerBoards()
-        {           
+        {
             PlaceShips(playerOne);
             PlaceShips(playerTwo);
         }
         public void PlaceShips(Player player)
         {
-            foreach(Ship ship in player.ships)
+            foreach (Ship ship in player.ships)
             {
                 player.PlaceShip(ship);
             }
@@ -110,7 +143,7 @@ namespace ProjectThreeBattleship
         public bool PlayerAlive(Player player)
         {
             bool alive = false;
-            foreach(Ship ship in player.ships)
+            foreach (Ship ship in player.ships)
             {
                 if (!ship.IsSunk())
                 {
@@ -121,7 +154,6 @@ namespace ProjectThreeBattleship
             return alive;
         }
 
-       
 
     }
 }

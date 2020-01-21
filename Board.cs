@@ -108,7 +108,6 @@ namespace ProjectThreeBattleship
                     Console.WriteLine(s);
                 }
             }
-
             for (int i = 0; i < rows; i++)
             {
                 Console.Write(intsToLetters[i] + " ");
@@ -397,6 +396,21 @@ namespace ProjectThreeBattleship
                 }
             }
         }
-       
+
+        public string GetRandomCoordinate(List<string> allCoordinates)
+        {
+            int index = 0;
+            string coord = "";
+            index = StaticRandom.Next(0, allCoordinates.Count);
+            if (allCoordinates.Count > 0)
+            {
+                coord = allCoordinates[index];
+            }
+            allCoordinates.RemoveAt(index);
+
+            return coord;
+
+        }
+
     }
 }

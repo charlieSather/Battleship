@@ -117,8 +117,8 @@ namespace ProjectThreeBattleship
         }
         public static void SunkShip(Player player, Ship ship)
         {
-            Console.Clear();
-            Console.WriteLine($"{player.name}'s {ship.name} has sunk!!!");
+            //Console.Clear();
+            Console.WriteLine($"\n{player.name}'s {ship.name} has sunk!!!");
             Console.WriteLine("Press enter to end turn");
             Console.ReadLine();
         }
@@ -132,16 +132,18 @@ namespace ProjectThreeBattleship
         }
         public static void PrintWinner(Player player)
         {
+            player.opponentBoard.printBoard();
             Console.WriteLine($"Congratulations {player.name}!!");
             Console.WriteLine($"You have won the game!!!!");
+            Console.ReadLine();
         }
 
         public static int PromptAutoFill()
         {
             Console.Clear();
-            Console.WriteLine("Do you want to autofill board with default positions\n1: Yes\n2: No");
+            Console.WriteLine("Select Game Mode:\n1: Automated with completely random but unique guessing\n2: Automated random ship placement with player guessing\n3: Standard gameplay");
 
-            Regex intMatch = new Regex(@"^[1,2]$");
+            Regex intMatch = new Regex(@"^[1,2,3]$");
             string input = Console.ReadLine();
             if (intMatch.IsMatch(input))
             {
